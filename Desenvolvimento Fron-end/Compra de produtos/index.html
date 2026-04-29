@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra de Produtos</title>
+</head>
+<body>
+    <main>
+        <h1>Compra de Produtos</h1>
+
+        <p>
+            <label for="inPreco">Valor do Produto: R$ </label>
+            <input type="number" id="inPreco" min="0.01" step="0.01" placeholder="0.00">
+        </p>
+
+        <p>
+            <label for="inQuantidade">Quantidade do Produto: </label>
+            <input type="number" id="inQuantidade" min="1" step="1" placeholder="1">
+        </p>
+
+        <p>
+            <button type="button" id="btSomar">Somar</button>
+            <button type="button" id="btZerar">Zerar</button>
+        </p>
+
+        <h3 id="outTotal">Total = R$0.00</h3>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
