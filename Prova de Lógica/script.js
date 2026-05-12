@@ -34,7 +34,7 @@ document.getElementById("btnTrecho").addEventListener("click", function () {
     campoTempo.focus();
     return;
   }
-
+ 
   const velocidadeMedia = distancia / tempo;
   trechos.push({ distancia, tempo, velocidadeMedia });
 
