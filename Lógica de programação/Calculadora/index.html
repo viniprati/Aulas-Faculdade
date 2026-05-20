@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simples</title>
+</head>
+<body>
+    <h1>Calculadora</h1>
+
+    <p>
+        <strong>Operando 1:</strong>
+        <input type="number" id="inpOperando1" step="any">
+    </p>
+
+    <p>
+        <strong>Operação:</strong>
+        <select id="selOperacao">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="^">^</option>
+            <option value="SQRT">SQRT</option>
+        </select>
+    </p>
+
+    <p>
+        <strong>Operando 2:</strong>
+        <input type="number" id="inpOperando2" step="any">
+    </p>
+
+    <button type="button" id="btnCalcular">=</button>
+    <button type="button" id="btnLimpar">Limpar</button>
+
+    <p>
+        <strong id="pSaida"></strong>
+    </p>
+
+    <script src="script.js"></script>
+</body>
+</html>
