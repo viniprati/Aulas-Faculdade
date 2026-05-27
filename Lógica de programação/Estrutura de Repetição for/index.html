@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Empréstimo</title>
+</head>
+<body>
+    <h1>Simulador de Empréstimo</h1>
+
+    <p>
+        <strong>Valor do empréstimo:</strong>
+        <input type="number" id="inpEmprestimo" min="0.01" step="0.01">
+    </p>
+
+    <button type="button" id="btnCalcular">Calcular</button>
+    <button type="button" id="btnLimpar">Limpar</button>
+
+    <table id="tblResultado" border="1" cellpadding="8" hidden>
+        <thead>
+            <tr>
+                <th>Quantidade de Parcelas</th>
+                <th>Valor da Dívida</th>
+                <th>Valor dos Juros</th>
+                <th>Valor das Parcelas</th>
+            </tr>
+        </thead>
+        <tbody id="tbResultados"></tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
