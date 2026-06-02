@@ -36,7 +36,7 @@ document.getElementById("btnTrecho").addEventListener("click", function () {
   }
  
   const velocidadeMedia = distancia / tempo;
-  trechos.push({ distancia, tempo, velocidadeMedia });
+  trechos.push({ distancia: distancia, tempo: tempo, velocidadeMedia: velocidadeMedia });
 
   saida.textContent = `Trecho registrado: ${distancia} km em ${tempo} h. Velocidade média: ${velocidadeMedia.toFixed(2)} km/h.`;
 });
