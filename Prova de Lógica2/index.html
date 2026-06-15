@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de Lógica 2</title>
+</head>
+<body>
+    <fieldset>
+        <h1>Gestão de Pessoas</h1>
+
+        <fieldset>
+            <legend>Dados do Colaborador</legend>
+
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" pattern="[A-Za-zÀ-ÿ ]+">
+            <br><br>
+
+            <label for="cargo">Cargo:</label>
+            <select id="cargo">
+                <option value="">Selecione</option>
+                <option value="Gerência">Gerência</option>
+                <option value="Administrativo">Administrativo</option>
+                <option value="Vendedor">Vendedor</option>
+            </select>
+            <br><br>
+
+            <label for="sexo">Sexo biológico:</label>
+            <select id="sexo">
+                <option value="">Selecione</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="InterSexo">InterSexo</option>
+            </select>
+            <br><br>
+
+            <label for="salario">Salário: R$ </label>
+            <input type="number" id="salario">
+            <br><br>
+        </fieldset>
+
+        <br>
+
+        <button id="btnRegistrar">Registrar</button>
+        <button id="btnConsultarNome">Consultar Nome</button>
+        <button id="btnMostrarVendedores">Mostrar Vendedores(as)</button>
+        <button id="btnMediaSalariosSexo">Média Salários Sexo</button>
+
+        <pre id="saida"></pre>
+    </fieldset>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!--
+Usar o <pre> de preferência
+
+Não usar no JS:
+forEach
+find
+indexOf
+includes
+(métodos de Arrays no geral)
+
+
+fieldset serve pra criar a linha em volta da aplicação. 
+pattern="[A-Za-zÀ-ÿ ]+" serve para permitir apenas caracteres no campo "Nome" (linha 17)
+
+
+-->
