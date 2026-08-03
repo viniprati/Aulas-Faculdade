@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Armazém - Vetores</title>
+</head>
+<body>
+    <img src="controle_estoque.png" alt="Gerenciamento de estoque">
+    <h1>
+        Administração de Armazém
+    </h1>
+    <fieldset class="configuracao">
+        <legend>
+            <h2>
+                Gerenciamento de Produtos para Venda: 
+            </h2>
+        </legend>
+        <p class="botao">
+            <input type="button" value="Listar Produtos Ordenados" id="btListar">
+        </p>
+
+        <p class="botao">
+            Filtro:
+            <input type="number" id="inFiltro">
+            <input type="button" value="Filtrar Produtos" id="btFiltro">
+        </p>  
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            <h2>
+                Relatório: 
+            </h2>
+        </legend>
+        <pre id="outListagem"></pre>
+        <h3 id="outTotal"></h3>
+    </fieldset>
+    <script src="script.js"></script>
+</body>
+</html>
