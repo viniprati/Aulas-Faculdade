@@ -379,7 +379,7 @@ function filtrarProdutos() {
 }
 
 var btListar = document.getElementById("btListar");
-btListar.addEventListener("click", listarProdutos);
+btListar.addEventListener("click", listarPrdutos);
 
 var btFiltro = document.getElementById("btFiltro");
 btFiltro.addEventListener("click", filtrarProdutos);
