@@ -78,12 +78,6 @@ function executarFunc(){
 }
 
 function toString(vetor){
-    /*  Converte o vetor em uma string formatada e retorna essa string
-        Cada elemento do vetor é exibido em uma linha, com seu índice e valor
-        Exemplo: [0]: 31
-                 [1]: 7
-                 [2]: 53
-    */
     let strVetor = "";
     vetor.forEach(
         (numero, ind) => {
@@ -94,31 +88,25 @@ function toString(vetor){
 }
 
 function inserirElemento(vetor, elemento){
-    /*  Insere um elemento no vetor, caso ele não exista
-        Retorna true se o elemento foi inserido, false caso contrário
-    */
     if (vetor.includes(elemento) == false){
         vetor.push(elemento);
         return true;
+    } else {
+        return false;
     }
-    return false; // elemnento não incluído, pois já existe no vetor
 }
 
 function excluirElemento(vetor, elemento){
-    /*  Exclui um elemento do vetor, caso ele exista
-        Retorna true se o elemento foi excluido, false caso contrário
-    */
     let posicao = vetor.indexOf(elemento);
     if (posicao >= 0){
         vetor.splice(posicao, 1);
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 function somarElementos(vetor){
-    /*  Retorna a soma de todos os elementos do vetor
-    */
     var acumuladora = 0;
 
     vetor.forEach(
@@ -130,8 +118,6 @@ function somarElementos(vetor){
 }
 
 function indexMenorElemento(vetor){
-    /*  Retorna o índice do menor elemento do vetor
-    */
     var indexMenor = 0;
 
     for (let ind = 1; ind < vetor.length; ind++){
@@ -143,27 +129,21 @@ function indexMenorElemento(vetor){
 }
 
 function alterarElemento(vetor, posicao, elemento){
-    /*  Altera o elemento da posição informada, caso a posição exista
-        e o novo elemento ainda não exista no vetor.
-        Retorna true se o elemento foi alterado, false caso contrário.
-    */
-    if (posicao >= 0 && posicao < vetor.length && vetor.includes(elemento) == false){
+    if (posicao < 0 || posicao >= vetor.length){
+        return false;
+    } else if (vetor.includes(elemento)){
+        return false;
+    } else {
         vetor[posicao] = elemento;
         return true;
     }
-    return false;
 }
 
 function procurarElemento(vetor, elemento){
-    /*  Retorna o índice do elemento procurado.
-        Se o elemento não existir, retorna -1.
-    */
     return vetor.indexOf(elemento);
 }
 
 function indexMaiorElemento(vetor){
-    /*  Retorna o índice do maior elemento do vetor
-    */
     var indexMaior = 0;
 
     for (let ind = 1; ind < vetor.length; ind++){
@@ -175,15 +155,10 @@ function indexMaiorElemento(vetor){
 }
 
 function calcularMedia(vetor){
-    /*  Retorna a média dos elementos do vetor
-    */
     return somarElementos(vetor) / vetor.length;
 }
 
 function ordenarElementos(vetor){
-    /*  Retorna uma string com os elementos do vetor em ordem crescente,
-        sem alterar a ordem original do vetor.
-    */
     let copiaVetor = vetor.slice();
     copiaVetor.sort(
         (a, b) => a - b
