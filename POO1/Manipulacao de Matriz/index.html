@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Notas</title>
+</head>
+
+<body>
+    <h1>Matriz de Notas</h1>
+    <h5>[<br>
+        Aluno1: [Av1, Av2, Av3 ...]<br>
+        Aluno2: [Av1, Av2, Av3 ...]<br>
+        Aluno3: [Av1, Av2, Av3 ...]<br>
+        Aluno4: [Av1, Av2, Av3 ...]<br>
+        ...<br>
+    ]
+    <hr>
+    </h4>
+    <section id="sctMatriz">
+        <h3>Iniciar Matriz de Notas:</h3>
+        <p>Quant. Alunos: <input type="number" id="inQtAlunos" ></p>
+        <p>Quant. Avaliações: <input type="number" id="inQtAvaliacoes"></p>
+        <button id="btIniciar">Iniciar Matriz</button>
+    </section>
+
+    <section id="sctNotas" hidden>
+        <h3>Registrar Notas :</h3>
+        <table id="tblNotas" border="1"></table>
+        <p>
+            <button id="btSalvar">Salvar Notas</button>
+            <button id="btAlterar">Alterar Notas</button>
+            <button id="btNotaFinal">Calcular Notas Finais</button>
+            <button id="btMaioresNotas">Maiores Notas</button>
+        </p>
+    </section>
+    <hr>
+    <h4 id="outMsg"></h4>
+    <script src="exemploMatrizNotas.js"></script>
+</body>
+
+</html>
