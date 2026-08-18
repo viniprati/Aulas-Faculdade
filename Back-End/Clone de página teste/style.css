@@ -1,0 +1,667 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #17202a;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+.container {
+  width: min(1760px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #ffffff;
+  border-bottom: 1px solid #e1e8f0;
+}
+
+.barra-topo {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+
+.logo {
+  flex: 0 0 auto;
+  color: #0070bf;
+  font-size: 31px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.menu-principal,
+.menu-acoes,
+.lista-atalhos,
+.abas,
+.proximos-passos .container div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.menu-principal {
+  justify-content: center;
+  gap: 28px;
+  color: #1f2d3d;
+  font-size: 16px;
+}
+
+.menu-acoes {
+  justify-content: flex-end;
+  gap: 28px;
+  color: #1f2d3d;
+  font-size: 16px;
+}
+
+.menu-principal a:hover,
+.menu-acoes a:hover,
+.lista-atalhos a:hover,
+.grade-cards a:hover,
+.link-seta:hover {
+  color: #0068b5;
+}
+
+.hero {
+  position: relative;
+  min-height: 580px;
+  color: #ffffff;
+  background: #05070e;
+  overflow: hidden;
+}
+
+.hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.55) 38%, rgba(0, 0, 0, 0.06) 78%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.15), transparent 42%);
+}
+
+.conteudo-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 580px;
+  padding: 64px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.conteudo-hero .etiqueta,
+.conteudo-hero h1,
+.conteudo-hero p {
+  max-width: 680px;
+}
+
+.etiqueta {
+  margin-bottom: 10px;
+  color: #0b7fc7;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.hero .etiqueta {
+  color: #5bd6ff;
+  font-size: 18px;
+}
+
+h1 {
+  margin-bottom: 22px;
+  font-size: clamp(54px, 5.5vw, 94px);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: clamp(34px, 2.7vw, 54px);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+h3 {
+  margin-bottom: 12px;
+  font-size: 25px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.hero p {
+  margin-bottom: 26px;
+  color: #edf8ff;
+  font-size: 22px;
+}
+
+.botao {
+  width: fit-content;
+  min-height: 50px;
+  padding: 13px 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #0070bf;
+  border: 1px solid #0070bf;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.botao:hover {
+  background: #005f9f;
+}
+
+.botao-claro {
+  color: #003a5d;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.botao-claro:hover {
+  color: #ffffff;
+}
+
+.botao-secundario {
+  color: #0070bf;
+  background: #ffffff;
+}
+
+.atalhos {
+  background: #f4f7fa;
+  border-bottom: 1px solid #d7e2ec;
+}
+
+.lista-atalhos {
+  justify-content: center;
+  gap: 18px 48px;
+  padding: 28px 0;
+  color: #1f2d3d;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.destaque,
+.tecnologias,
+.escala,
+.cases,
+.bastidores {
+  padding: 82px 0;
+}
+
+.destaque {
+  text-align: center;
+}
+
+.destaque h2 {
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.destaque p {
+  max-width: 900px;
+  margin: 0 auto;
+  color: #526274;
+  font-size: 21px;
+}
+
+.tecnologias {
+  padding-top: 64px;
+}
+
+.abas {
+  gap: 14px;
+  margin: 28px 0 34px;
+}
+
+.abas button {
+  min-height: 48px;
+  padding: 11px 22px;
+  color: #1d2b38;
+  background: #ffffff;
+  border: 1px solid #b8ccdd;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.abas button:first-child {
+  color: #ffffff;
+  background: #0b7fc7;
+  border-color: #0b7fc7;
+}
+
+.bloco-imagem {
+  margin-bottom: 34px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 46px;
+  background: #f1f6fb;
+  border: 1px solid #d2e0ed;
+  border-radius: 8px;
+}
+
+.bloco-imagem img {
+  flex: 1 1 58%;
+  width: 58%;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.bloco-imagem div {
+  flex: 1 1 320px;
+  min-width: 260px;
+}
+
+.bloco-imagem p,
+.grade-cards p,
+.grade-resultados p,
+.grade-promocoes p {
+  color: #526274;
+  font-size: 18px;
+}
+
+.link-seta,
+.grade-cards a {
+  color: #0068b5;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.link-seta::after,
+.grade-cards a::after {
+  content: " ->";
+}
+
+.grade-cards,
+.grade-resultados,
+.grade-promocoes,
+.numeros,
+.rodape-grade {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.grade-cards article {
+  flex: 1 1 330px;
+}
+
+.grade-resultados article {
+  flex: 1 1 280px;
+}
+
+.grade-promocoes article {
+  flex: 1 1 460px;
+}
+
+.grade-cards article,
+.grade-resultados article,
+.grade-promocoes article {
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #dbe5ee;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(15, 35, 55, 0.06);
+}
+
+.faixa-escura {
+  padding: 86px 0;
+  color: #ffffff;
+  background: #101926;
+}
+
+.resultados {
+  display: flex;
+  align-items: flex-start;
+  gap: 42px;
+}
+
+.texto-resultados {
+  flex: 1 1 360px;
+}
+
+.grade-resultados {
+  flex: 2 1 760px;
+}
+
+.texto-resultados p {
+  color: #c8d3df;
+  font-size: 21px;
+}
+
+.grade-resultados article {
+  color: #17202a;
+}
+
+.grade-resultados img,
+.imagem-falsa {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 20px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.imagem-falsa {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 45%),
+    linear-gradient(135deg, #00a884, #2f80ed);
+}
+
+.imagem-laranja {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), transparent 42%),
+    linear-gradient(135deg, #ff8f3c, #7c3aed);
+}
+
+.escala {
+  display: flex;
+  align-items: center;
+  gap: 54px;
+}
+
+.escala > div:first-child {
+  flex: 1 1 420px;
+}
+
+.numeros {
+  flex: 2 1 720px;
+}
+
+.numeros article {
+  flex: 1 1 220px;
+  padding: 6px 0 6px 24px;
+  border-left: 5px solid #0b7fc7;
+}
+
+.numeros strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #111827;
+  font-size: clamp(42px, 3.3vw, 64px);
+  line-height: 1;
+}
+
+.numeros span {
+  color: #566272;
+  font-size: 18px;
+}
+
+.promocoes {
+  padding: 86px 0;
+  background: #edf5fa;
+}
+
+.grade-promocoes article {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    linear-gradient(135deg, rgba(0, 112, 191, 0.1), rgba(0, 168, 132, 0.14)),
+    #ffffff;
+}
+
+.proximos-passos {
+  padding: 76px 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, #09203f, #0b7fc7 55%, #f15b7e);
+  text-align: center;
+}
+
+.proximos-passos .container div {
+  justify-content: center;
+  gap: 16px;
+}
+
+.rodape {
+  padding: 56px 0;
+  background: #f3f5f8;
+  border-top: 1px solid #dce4ed;
+}
+
+.rodape-grade > div {
+  flex: 1 1 230px;
+}
+
+.rodape-grade > div:first-child {
+  flex: 2 1 420px;
+}
+
+.rodape p,
+.rodape a {
+  color: #4e5b6b;
+  font-size: 16px;
+}
+
+.rodape h3 {
+  font-size: 20px;
+}
+
+.rodape ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rodape li {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    width: min(100% - 48px, 1760px);
+  }
+
+  .barra-topo {
+    min-height: auto;
+    padding: 18px 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .menu-principal,
+  .menu-acoes {
+    justify-content: center;
+  }
+
+  .hero,
+  .conteudo-hero {
+    min-height: 520px;
+  }
+
+  .bloco-imagem,
+  .resultados,
+  .escala {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bloco-imagem img,
+  .bloco-imagem div,
+  .texto-resultados,
+  .grade-resultados,
+  .escala > div:first-child,
+  .numeros {
+    flex-basis: auto;
+  }
+
+  .bloco-imagem img {
+    width: 100%;
+  }
+
+  .bloco-imagem div {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: min(100% - 28px, 1760px);
+  }
+
+  .topo {
+    position: static;
+  }
+
+  .logo {
+    font-size: 28px;
+  }
+
+  .menu-principal {
+    width: 100%;
+    gap: 10px 18px;
+    font-size: 15px;
+  }
+
+  .menu-acoes {
+    display: none;
+  }
+
+  .hero,
+  .conteudo-hero {
+    min-height: 480px;
+  }
+
+  .hero img {
+    object-position: 62% center;
+  }
+
+  .hero::after {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.82) 58%, rgba(0, 0, 0, 0.42) 100%);
+  }
+
+  .conteudo-hero {
+    padding: 42px 0;
+  }
+
+  .hero .etiqueta {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 31px;
+  }
+
+  h3 {
+    font-size: 22px;
+  }
+
+  .hero p,
+  .destaque p,
+  .texto-resultados p,
+  .bloco-imagem p,
+  .grade-cards p,
+  .grade-resultados p,
+  .grade-promocoes p,
+  .numeros span {
+    font-size: 17px;
+  }
+
+  .destaque,
+  .tecnologias,
+  .escala,
+  .cases,
+  .bastidores,
+  .faixa-escura,
+  .promocoes {
+    padding: 52px 0;
+  }
+
+  .lista-atalhos {
+    gap: 16px;
+  }
+
+  .lista-atalhos a {
+    flex: 1 1 140px;
+    text-align: center;
+  }
+
+  .abas button {
+    width: 100%;
+  }
+
+  .bloco-imagem,
+  .grade-cards article,
+  .grade-resultados article,
+  .grade-promocoes article {
+    padding: 20px;
+  }
+
+  .grade-cards article,
+  .grade-resultados article,
+  .grade-promocoes article,
+  .numeros article,
+  .rodape-grade > div,
+  .rodape-grade > div:first-child {
+    flex-basis: 100%;
+  }
+
+  .grade-promocoes article {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 42px;
+  }
+
+  .menu-principal {
+    gap: 8px 14px;
+    font-size: 14px;
+  }
+
+  .lista-atalhos a {
+    flex-basis: 100%;
+  }
+}
