@@ -1,0 +1,139 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #101417;
+    color: #e8eee9;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+.cabecalho {
+    align-items: center;
+    background: #171d20;
+    border-bottom: 1px solid #35443d;
+    color: #e8eee9;
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 8%;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: #b8f28b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    background: #1a211f;
+    border-bottom: 1px solid #35443d;
+    padding: 70px 8%;
+}
+
+.hero div {
+    max-width: 760px;
+}
+
+.etiqueta {
+    color: #b8f28b;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+.botao {
+    background: #b8f28b;
+    border-radius: 6px;
+    color: #101417;
+    display: inline-block;
+    font-weight: bold;
+    padding: 12px 18px;
+    text-decoration: none;
+}
+
+.botao:hover {
+    background: #8fdc68;
+}
+
+.conteudo {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 40px 8%;
+}
+
+.card {
+    background: #171d20;
+    border: 1px solid #35443d;
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.card h2 {
+    color: #b8f28b;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.rodape {
+    background: #101417;
+    color: #e8eee9;
+    min-height: 24px;
+    padding: 12px 8%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .cabecalho {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .menu {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hero {
+        padding: 46px 6%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .conteudo {
+        grid-template-columns: 1fr;
+        padding: 30px 6%;
+    }
+}
