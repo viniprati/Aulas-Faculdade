@@ -1,25 +1,22 @@
 <?php
 require 'funcoes.php';
 
-$links = [
-    'Missão' => '#missao',
-    'Equipe' => '#equipe',
-    'Perigo' => '#perigo'
-];
-
 $cards = [
     [
         'id' => 'coleta',
+        'icone' => 'img/coleta.png',
         'titulo' => 'Coleta',
         'texto' => 'Entre no local e procure itens valiosos.'
     ],
     [
         'id' => 'equipe',
+        'icone' => 'img/equipe.png',
         'titulo' => 'Equipe',
         'texto' => 'Jogue em grupo e carregue os objetos juntos.'
     ],
     [
         'id' => 'perigo',
+        'icone' => 'img/sobrevivencia.png',
         'titulo' => 'Sobrevivência',
         'texto' => 'Cuidado com os monstros e volte para a van.'
     ]
@@ -35,13 +32,14 @@ $cards = [
 </head>
 <body>
     <?php
-    echo criarCabecalho('R.E.P.O', $links);
+    echo criarCabecalho('R.E.P.O');
 
     echo criarPrincipal(
         'Recupere itens. Fuja vivo.',
         'Página simples inspirada no jogo R.E.P.O.',
         $cards
     );
+
 
     echo criarRodape();
     ?>
