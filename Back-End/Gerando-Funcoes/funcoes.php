@@ -9,7 +9,7 @@ function iniciarSessao() {
 }
 
 function protegerTexto($texto) {
-    return htmlspecialchars($texto);
+    return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
 }
 
 function criarLinksMenu() {
@@ -73,6 +73,7 @@ function criarMenuLogado() {
     $html = '<nav class="menu menu-logado">';
     $html .= '<span class="usuario-nome">Olá, ' . protegerTexto($_SESSION['usuario_nome']) . '</span>';
     $html .= criarLinkMenu('painel.php', '', 'Painel');
+    $html .= criarLinkMenu('perfil.php', '', 'Perfil');
     $html .= criarLinkMenu('logout.php', '', 'Sair');
     $html .= '</nav>';
 
@@ -402,7 +403,7 @@ function buscarUsuarios() {
 
 function guardarUsuarios($usuarios) {
     $json = json_encode($usuarios, JSON_PRETTY_PRINT);
-    file_put_contents(caminhoArquivoUsuarios(), $json);
+    file_put_contents(caminhoArquivoUsuarios(), $json, LOCK_EX);
 }
 
 function salvarLogin($nome, $email) {
@@ -410,18 +411,66 @@ function salvarLogin($nome, $email) {
     $_SESSION['usuario_email'] = $email;
 }
 
+function validarSenhaForte($senha) {
+    if (strlen($senha) < 8) {
+        return 'A senha precisa ter pelo menos 8 caracteres.';
+    }
+
+    if (!preg_match('/[A-Z]/', $senha)) {
+        return 'A senha precisa ter pelo menos uma letra maiúscula.';
+    }
+
+    if (!preg_match('/[a-z]/', $senha)) {
+        return 'A senha precisa ter pelo menos uma letra minúscula.';
+    }
+
+    if (!preg_match('/[0-9]/', $senha)) {
+        return 'A senha precisa ter pelo menos um número.';
+    }
+
+    if (!preg_match('/[^a-zA-Z0-9]/', $senha)) {
+        return 'A senha precisa ter pelo menos um caractere especial.';
+    }
+
+    return '';
+}
+
+function senhaEstaCriptografada($senha) {
+    $informacoes = password_get_info($senha);
+
+    return $informacoes['algo'] != 0;
+}
+
+function senhaConfere($senhaDigitada, $senhaSalva) {
+    if (senhaEstaCriptografada($senhaSalva)) {
+        return password_verify($senhaDigitada, $senhaSalva);
+    }
+
+    return hash_equals($senhaSalva, $senhaDigitada);
+}
+
 function cadastrarUsuario($nome, $email, $senha) {
     $nome = trim($nome);
-    $email = trim($email);
+    $email = strtolower(trim($email));
 
     if ($nome == '' || $email == '' || $senha == '') {
         return 'Preencha todos os campos.';
     }
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return 'Digite um e-mail válido.';
+    }
+
+    $erroSenha = validarSenhaForte($senha);
+
+    if ($erroSenha != '') {
+        return $erroSenha;
+    }
+
     $usuarios = buscarUsuarios();
 
     foreach ($usuarios as $usuario) {
-        if ($usuario['email'] == $email) {
+        if (strtolower($usuario['email']) == $email) {
             return 'Este e-mail já está cadastrado.';
         }
     }
@@ -429,7 +478,7 @@ function cadastrarUsuario($nome, $email, $senha) {
     $novoUsuario = [
         'nome' => $nome,
         'email' => $email,
-        'senha' => $senha
+        'senha' => password_hash($senha, PASSWORD_DEFAULT)
     ];
 
     $usuarios[] = $novoUsuario;
@@ -440,11 +489,16 @@ function cadastrarUsuario($nome, $email, $senha) {
 }
 
 function fazerLogin($email, $senha) {
-    $email = trim($email);
+    $email = strtolower(trim($email));
     $usuarios = buscarUsuarios();
 
-    foreach ($usuarios as $usuario) {
-        if ($usuario['email'] == $email && $usuario['senha'] == $senha) {
+    foreach ($usuarios as $indice => $usuario) {
+        if (strtolower($usuario['email']) == $email && senhaConfere($senha, $usuario['senha'])) {
+            if (!senhaEstaCriptografada($usuario['senha'])) {
+                $usuarios[$indice]['senha'] = password_hash($senha, PASSWORD_DEFAULT);
+                guardarUsuarios($usuarios);
+            }
+
             salvarLogin($usuario['nome'], $usuario['email']);
             return '';
         }

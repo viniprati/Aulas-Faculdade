@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $erro = fazerLogin($_POST['email'], $_POST['senha']);
 
     if ($erro == '') {
-        header('Location: painel.php');
+        header('Location: perfil.php');
         exit;
     }
 }
