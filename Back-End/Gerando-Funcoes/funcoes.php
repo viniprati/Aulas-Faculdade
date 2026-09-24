@@ -18,7 +18,8 @@ function criarLinksMenu() {
         'Missão' => 'missao.php',
         'Equipe' => 'index.php#equipe',
         'Perigo' => 'perigo.php',
-        'Pesquisar' => 'pesquisa.php'
+        'Pesquisar' => 'pesquisa.php',
+        'Usuários' => 'listar_usuarios.php'
     ];
 }
 
