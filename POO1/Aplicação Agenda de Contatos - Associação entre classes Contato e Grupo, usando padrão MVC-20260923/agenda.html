@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="imagem/png" href="box.png" />
+    <link rel="stylesheet" href="agenda.css">
+    <title> Agenda Contatos </title>
+</head>
+
+
+<body>
+    <header>
+        <img src="agenda.png" class="icon">
+        <h1 class="titulo">Agenda de Contatos</h1>
+    </header>
+    <main>
+        <select id="selectOpcao">
+            <option value="Selecione-Uma-Opção" disabled selected> Selecione Uma Opção </option>
+            <option value="Cadastrar-Contato">Cadastrar Novo Contato</option>
+            <option value="Excluir-Contato">Excluir um Contato</option>
+            <option value="Alterar-Endereco">Alterar Endereço de um Contato</option>
+            <option value="Alterar-Telefone">Alterar Telefone de um Contato</option>
+            <option value="Exibir-Contato">Exibir Informações de um Contato</option>
+            <option value="Filtrar-Endereço">Filtrar pelo Endereço</option>
+            <option value="Listar-Contatos">Listar Contatos</option>
+            <option value="Cadastrar-Grupo">Cadastrar Novo Grupo</option>
+            <option value="Excluir-Grupo">Excluir Grupo</option>
+            <option value="Incluir-Contato-Grupo">Incluir Contato em Grupo</option>
+            <option value="Excluir-Contato-Grupo">Excluir Contato de Grupo</option>
+            <option value="Listar-Contatos-Grupo">Listar Contatos de Grupo</option>
+            <option value="Salvar">Salvar Contatos e Grupos</option>
+        </select>
+
+        <section>
+            <lable> Nome: <input type="text" id="inNomeContato" placeholder="Insira o Nome" disabled> </lable>
+            <lable> Endereço: <input type="text" id="inEnderecoContato" placeholder="Insira o Endereço" disabled></lable>
+            <lable> Telefone: <input type="text" id="inTelefoneContato" placeholder="(DD)XXXXX-XXXX" disabled> </lable>
+            <lable> CPF: <input type="text" id="inCpfContato" placeholder="XXX.XXX.XXX-XX" disabled> </lable>
+            <lable> Data de Nascimento: <input type="text" id="inDataNascContato" placeholder="DD/MM/AAAA" disabled></lable>
+            <lable> Descrição do Grupo: <input type="text" id="inDescricaoGrupo"
+                    placeholder="Ex: Família, Amigos, Academia, Amigos..." disabled> </lable>
+            <p>
+                <button id="btOk" disabled>Executar</button>
+            </p>
+            <pre id="outSaida"></pre>
+        </section>
+        <section class="table"></section>
+    </main>
+
+    <script src="./agendaView.js" type="module"> </script>
+</body>
+</html>
