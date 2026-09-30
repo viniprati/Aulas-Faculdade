@@ -28,7 +28,7 @@ export class ProdutoController {
         if (this.#buscarProduto(descricao) !== undefined) {
             produtoCadastrado = false;
         } else {
-            this.#produtos.push(new Produto(descricao, preco, quantidadeEstoque));
+            this.#produtos.push(new Produto(descricao, preco, preco, quantidadeEstoque));
             produtoCadastrado = true;
         }
 
@@ -140,7 +140,7 @@ export class ProdutoController {
                 const linha = document.createElement("tr");
                 const dados = [
                     produto.descricao,
-                    `R$ ${produto.preco.toFixed(2)}`,
+                    `R$ ${produto.precoVenda.toFixed(2)}`,
                     produto.quantidadeEstoque
                 ];
 
@@ -160,7 +160,8 @@ export class ProdutoController {
     salvarProdutos() {
         const produtos = this.#produtos.map((produto) => ({
             descricao: produto.descricao,
-            preco: produto.preco,
+            precoCompra: produto.precoCompra,
+            precoVenda: produto.precoVenda,
             quantidadeEstoque: produto.quantidadeEstoque,
             vendasMensais: produto.vendasMensais
         }));
@@ -193,19 +194,33 @@ export class ProdutoController {
 
         if (produtosSalvos === null) {
             produtosCarregados = [
-                new Produto("ARROZ", 27.9, 30, [12, 8, 15, 10, 7, 18, 9, 11, 14, 13, 16, 20]),
-                new Produto("FEIJAO", 8.5, 20, [9, 13, 11, 14, 8, 10, 15, 12, 9, 16, 10, 13]),
-                new Produto("MACARRAO", 5.75, 15, [20, 18, 22, 19, 17, 21, 16, 23, 18, 20, 19, 24])
+                new Produto("ARROZ", 27.9, 27.9, 30, [12, 8, 15, 10, 7, 18, 9, 11, 14, 13, 16, 20]),
+                new Produto("FEIJAO", 8.5, 8.5, 20, [9, 13, 11, 14, 8, 10, 15, 12, 9, 16, 10, 13]),
+                new Produto("MACARRAO", 5.75, 5.75, 15, [20, 18, 22, 19, 17, 21, 16, 23, 18, 20, 19, 24])
             ];
         } else {
             const produtos = JSON.parse(produtosSalvos);
 
-            produtosCarregados = produtos.map((produto) => new Produto(
-                produto.descricao,
-                produto.preco,
-                produto.quantidadeEstoque,
-                produto.vendasMensais
-            ));
+            produtosCarregados = produtos.map((produto) => {
+                let precoCompra = produto.precoCompra;
+                let precoVenda = produto.precoVenda;
+
+                if (precoCompra == undefined) {
+                    precoCompra = produto.preco;
+                }
+
+                if (precoVenda == undefined) {
+                    precoVenda = produto.preco;
+                }
+
+                return new Produto(
+                    produto.descricao,
+                    precoCompra,
+                    precoVenda,
+                    produto.quantidadeEstoque,
+                    produto.vendasMensais
+                );
+            });
         }
 
         return produtosCarregados;

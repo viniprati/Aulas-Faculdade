@@ -1,0 +1,44 @@
+ANÁLISE DO USO DO CODEX NO PROCESSO DE APRENDIZAGEM
+
+Projeto: Aplicação Armazém — Programação Orientada a Objetos
+
+1. OBJETIVO DA CONSULTA
+
+O Codex foi utilizado como ferramenta de consulta para compreender os requisitos da atividade e esclarecer dúvidas sobre Programação Orientada a Objetos e o padrão MVC.
+
+As consultas abordaram conceitos como encapsulamento, atributos privados, getters e setters, associação entre objetos, DTOs, persistência com localStorage e separação de responsabilidades.
+
+2. PARTICIPAÇÃO DO ESTUDANTE
+
+O estudante participou do desenvolvimento da atividade, tomando decisões sobre a organização do código e seguindo as orientações do professor. Durante esse processo, apresentou dúvidas e trechos de código para discussão, buscando compreender os conceitos e aplicá-los no projeto.
+
+Também indicou as convenções exigidas na disciplina, como não utilizar break fora de switch/case e empregar || e && somente como conectores lógicos.
+
+3. PAPEL DO CODEX
+
+Conforme o relato do estudante, o uso do Codex ficou restrito à consulta e ao esclarecimento de dúvidas. A ferramenta serviu como apoio para interpretar os requisitos, entender a função dos métodos e discutir a organização das classes.
+
+Assim, não cabe atribuir ao Codex a execução integral das etapas, a realização de testes ou a validação completa da aplicação. O conteúdo das consultas não deve ser apresentado como comprovação dessas ações.
+
+4. CONCEITOS ESTUDADOS
+
+Ao longo da atividade, foram estudados:
+
+- estrutura da classe Fornecedor, com atributos privados e métodos de acesso;
+- associação entre Produto e Fornecedor;
+- organização das regras de negócio no Controller;
+- utilização de DTOs e códigos simbólicos;
+- responsabilidades da View na apresentação dos dados;
+- persistência de informações com localStorage.
+
+Esses assuntos foram consultados para apoiar a compreensão e a aplicação dos conteúdos trabalhados na disciplina.
+
+5. AVALIAÇÃO DO PROCESSO
+
+As consultas demonstram a busca por compreender a atividade e esclarecer dúvidas durante seu desenvolvimento. O estudante procurou relacionar as explicações às exigências do professor e à estrutura do próprio projeto.
+
+O papel da ferramenta foi fornecer uma fonte complementar de informação, enquanto as decisões sobre a atividade permaneceram sob responsabilidade do estudante.
+
+6. CONCLUSÃO
+
+O Codex foi utilizado como recurso de consulta para apoiar o estudo de Programação Orientada a Objetos e MVC. Sua contribuição se concentrou no esclarecimento de conceitos e dúvidas, conforme informado pelo estudante, sem caracterizar a ferramenta como responsável pelo desenvolvimento completo da aplicação.

@@ -1,213 +1,684 @@
-/*
-Autor: Henrique, Paulo Cesar, Archimedes
-Versão: 3.0 - 09/09/2026
-Descrição: Aplicação para gerenciamento de um armazém utilizando matrizes
- */
+import { ArmazemController } from "./ArmazemController.js";
 
-import {ProdutoController} from "./ProdutoController.js";
-//import {Produto} from "./Produto.js";
+const armazemController = new ArmazemController();
 
-const inProduto = document.getElementById("inProduto");
-const inMes = document.getElementById("inMes");
-const inQtd = document.getElementById("inQtd");
-const btOk = document.getElementById("btOk");
+const radioProduto = document.getElementById("radioProduto");
+const radioFornecedor = document.getElementById("radioFornecedor");
+const divProduto = document.getElementById("divProduto");
+const divFornecedor = document.getElementById("divFornecedor");
+const selectOpcaoProduto = document.getElementById("selectOpcaoProduto");
+const selectOpcaoFornecedor = document.getElementById("selectOpcaoFornecedor");
+const btProduto = document.getElementById("btProduto");
+const btFornecedor = document.getElementById("btFornecedor");
+const btSalvar = document.getElementById("btSalvar");
 const outResultado = document.getElementById("outResultado");
-const selectOpcao = document.getElementById("selectOpcao");
-const sectionResultado = document.querySelector(".sectionResultado");
+const sectionResultado = document.getElementById("sectionResultado");
 
-const produtoController = new ProdutoController();
+const inDescricaoProduto = document.getElementById("inDescricaoProduto");
+const inPrecoCompra = document.getElementById("inPrecoCompra");
+const inPrecoVenda = document.getElementById("inPrecoVenda");
+const inQuantidadeProduto = document.getElementById("inQuantidadeProduto");
+const inMesProduto = document.getElementById("inMesProduto");
+const inCnpjFornecedorProduto = document.getElementById("inCnpjFornecedorProduto");
 
-btOk.addEventListener("click", executarFunc);
+const inRazaoSocial = document.getElementById("inRazaoSocial");
+const inCnpjFornecedor = document.getElementById("inCnpjFornecedor");
+const inTelefoneFornecedor = document.getElementById("inTelefoneFornecedor");
+const inEnderecoFornecedor = document.getElementById("inEnderecoFornecedor");
+const inCreditoFornecedor = document.getElementById("inCreditoFornecedor");
 
-selectOpcao.addEventListener("change", function () {
-    let opcao = selectOpcao.value;
+const camposProduto = [
+    inDescricaoProduto,
+    inPrecoCompra,
+    inPrecoVenda,
+    inQuantidadeProduto,
+    inMesProduto,
+    inCnpjFornecedorProduto
+];
 
-    if (opcao != "") {
-        verificarOpcao(opcao);
+const camposFornecedor = [
+    inRazaoSocial,
+    inCnpjFornecedor,
+    inTelefoneFornecedor,
+    inEnderecoFornecedor,
+    inCreditoFornecedor
+];
+
+radioProduto.addEventListener("change", alternarPainel);
+radioFornecedor.addEventListener("change", alternarPainel);
+selectOpcaoProduto.addEventListener("change", configurarCamposProduto);
+selectOpcaoFornecedor.addEventListener("change", configurarCamposFornecedor);
+btProduto.addEventListener("click", executarOperacaoProduto);
+btFornecedor.addEventListener("click", executarOperacaoFornecedor);
+btSalvar.addEventListener("click", salvarDados);
+
+function alternarPainel() {
+    if (radioProduto.checked) {
+        divProduto.hidden = false;
+        divFornecedor.hidden = true;
+    } else {
+        divProduto.hidden = true;
+        divFornecedor.hidden = false;
     }
-});
 
-function verificarOpcao(opcao) {
-    inProduto.disabled = true;
-    inProduto.placeholder = "";
-    inProduto.value = "";
-    inQtd.disabled = true;
-    inQtd.placeholder = "";
-    inQtd.value = "";
-    inMes.disabled = true;
-    inMes.placeholder = "";
-    inMes.value = "";
+    limparSaida();
+}
 
-    outResultado.innerHTML = "";
-    sectionResultado.innerHTML = "";
+function configurarCamposProduto() {
+    desabilitarCampos(camposProduto);
+    btProduto.disabled = selectOpcaoProduto.value == "";
 
-
-    switch (opcao) {
+    switch (selectOpcaoProduto.value) {
         case "Cadastrar":
+            habilitarCampos([
+                inDescricaoProduto,
+                inPrecoCompra,
+                inPrecoVenda,
+                inQuantidadeProduto,
+                inCnpjFornecedorProduto
+            ]);
+            break;
         case "Excluir":
-            inProduto.disabled = false;
-            inProduto.placeholder = "Digite um produto";
+        case "Consultar":
+        case "TotalVendasAno":
+        case "MaisVendidoMes":
+            habilitarCampos([inDescricaoProduto]);
             break;
         case "Alterar":
-            inProduto.disabled = false;
-            inProduto.placeholder = "Digite um produto";
-            inMes.disabled = false;
-            inMes.placeholder = "Digite um mês [1-12]";
-            inQtd.disabled = false;
-            inQtd.placeholder = "Digite a quantidade vendida no mês";
+            habilitarCampos([
+                inDescricaoProduto,
+                inPrecoCompra,
+                inPrecoVenda,
+                inQuantidadeProduto,
+                inCnpjFornecedorProduto
+            ]);
             break;
-        case "ConsultarQtd":
-            inProduto.disabled = false;
-            inProduto.placeholder = "Digite um produto";
+        case "AlterarVendas":
+            habilitarCampos([
+                inDescricaoProduto,
+                inMesProduto,
+                inQuantidadeProduto
+            ]);
             break;
-        case "ConsultarProd":
-            inMes.disabled = false;
-            inMes.placeholder = "Digite um mês [1-12]";
+        case "Comprar":
+            habilitarCampos([
+                inDescricaoProduto,
+                inQuantidadeProduto,
+                inPrecoCompra,
+                inPrecoVenda,
+                inCnpjFornecedorProduto
+            ]);
             break;
-        case "FiltrarQtdEst":
-            inQtd.disabled = false;
-            inQtd.placeholder = "Digite filtro quant. estoque";
+        case "Vender":
+            habilitarCampos([inDescricaoProduto, inQuantidadeProduto]);
+            break;
+        case "FaturamentoMes":
+            habilitarCampos([inMesProduto]);
+            break;
+        case "ProdutosFornecedor":
+            habilitarCampos([inCnpjFornecedorProduto]);
+            break;
+        case "Listar":
+        case "TabelaVendasAnual":
+            break;
+    }
+
+    limparSaida();
+}
+
+function configurarCamposFornecedor() {
+    desabilitarCampos(camposFornecedor);
+    btFornecedor.disabled = selectOpcaoFornecedor.value == "";
+
+    switch (selectOpcaoFornecedor.value) {
+        case "Cadastrar":
+            habilitarCampos(camposFornecedor);
+            break;
+        case "Excluir":
+        case "Consultar":
+            habilitarCampos([inCnpjFornecedor]);
+            break;
+        case "Alterar":
+            habilitarCampos(camposFornecedor);
+            break;
+        case "FiltrarCredito":
+            habilitarCampos([inCreditoFornecedor]);
+            break;
+        case "Listar":
+            break;
+    }
+
+    limparSaida();
+}
+
+function executarOperacaoFornecedor() {
+    limparSaida();
+
+    try {
+        switch (selectOpcaoFornecedor.value) {
+            case "Cadastrar":
+                cadastrarFornecedor();
+                break;
+            case "Excluir":
+                executarExclusaoFornecedor();
+                break;
+            case "Alterar":
+                executarAlteracaoFornecedor();
+                break;
+            case "Consultar":
+                consultarFornecedor();
+                break;
+            case "Listar":
+                exibirFornecedores(armazemController.listarFornecedores());
+                break;
+            case "FiltrarCredito":
+                filtrarFornecedores();
+                break;
+        }
+    } catch (erro) {
+        mostrarMensagem(erro.message, false);
     }
 }
 
-function executarFunc() {
-    let opcao = selectOpcao.value;
-    let descrProduto = (inProduto.value).toUpperCase();
-    let mes = Number(inMes.value);
-    let quantidade = Number (inQtd.value); 
-    outResultado.innerHTML = "";
-    sectionResultado.innerHTML = "";
+function cadastrarFornecedor() {
+    if (campoVazio(inRazaoSocial)) {
+        mostrarMensagem("Preencha a razão social do fornecedor.", false);
+        inRazaoSocial.focus();
+    } else if (campoVazio(inCnpjFornecedor)) {
+        mostrarMensagem("Preencha o CNPJ do fornecedor.", false);
+        inCnpjFornecedor.focus();
+    } else {
+        const codigo = armazemController.cadastrarFornecedor(
+            inRazaoSocial.value,
+            inCnpjFornecedor.value,
+            inTelefoneFornecedor.value,
+            inEnderecoFornecedor.value,
+            inCreditoFornecedor.value
+        );
 
-    switch (opcao) {
-        case "Cadastrar":
-        
-            if (descrProduto == "") {
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Para cadastrar produto novo, o campo deve ser preenchido!";
-                inProduto.focus();
-            } else {
-                if (produtoController.cadastrarProduto(descrProduto) == true) {
-                    outResultado.style.color = "blue";
-                    outResultado.innerHTML = "O novo produto foi cadastrado com sucesso!";
-                } else {
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "Erro! O produto " + descrProduto + " já estava cadastrado!";
-                    inProduto.focus();
-                }
-            }
-            break;
-
-        case "Excluir":
-            if (descrProduto == ""){
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Para excluir um produto, o campo deve ser preenchido!";
-                inProduto.focus();
-            } else {
-                if (produtoController.excluirProduto(descrProduto)){
-                    outResultado.style.color = "blue";
-                    outResultado.innerHTML = "O produto " + descrProduto + " foi excluído dos registros do Armazém!";
-                } else {
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "O produto que deseja excluir não está cadastrado ou tem quantidade em estoque!";
-                }
-            }
-            break;
-
-        case "Alterar": 
-            if(mes < 1 || mes > 12){
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Ops, digite um mês de 1-12!";
-                inMes.focus();
-            } else {
-                if (inQtd.value == "" || quantidade < 0){
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "Para alterar quantidade vendida, o campo Quantidade deve ser preenchido com valor >= 0 !";
-                    inQtd.focus();
-                }else {
-                    let produto = produtoController.alterarProduto(descrProduto,mes,quantidade);
-                    if (produto != undefined){
-                        outResultado.style.color = "blue";
-                        outResultado.innerHTML = "O produto " + produto.descricao + " foi alterado no mês " + mes + " tendo como quantidade vendida : " + produto.getQtdVendasMes(mes);
-                    } else {
-                        outResultado.style.color = "red";
-                        outResultado.innerHTML = "O produto que deseja alterar não está cadastrado";
-                    }   
-                }
-            }
-            break;
-        
-        case "Listar":
-            let htmlTable = produtoController.criarTableHtml();
-            if (htmlTable != undefined){
-                sectionResultado.appendChild(htmlTable);
-            } else {
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Erro! Divergência entre os dados do vetor de Produtos e de Mêses!";
-            }
-            break;
-
-        case "ConsultarQtd":
-            
-                if (descrProduto == "") {
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "Para consultar a quantidade deve-se preencher o campo Produto!";
-                    inProduto.focus();
-    
-                } else {
-                    let somaVendasProduto = produtoController.consultarQtd(descrProduto, 1, 12);
-                    if (somaVendasProduto >= 0) {
-                        outResultado.style.color = "blue";
-                        outResultado.innerHTML = "O produto " + descrProduto + " vendeu " + somaVendasProduto + " unidades no ano."
-                    } else {
-                        outResultado.style.color = "red";
-                        outResultado.innerHTML = "Erro! O produto " + descrProduto + " não existe!";
-                        inProduto.focus();
-                    }
-                }
-                break;
-
-        case "ConsultarProd" :
-            if(mes <= 0 || mes > 12){
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Ops! digite o mês de 1-12";
-                inMes.focus();
-            } else {
-                let produto = produtoController.produtoMaisVendidoMes(mes);
-
-                if (produto != undefined) {
-                    outResultado.style.color = "blue";
-                    outResultado.innerHTML = "O produto mais vendido no mês " + mes + " foi: "
-                                                + produto.descricao
-                                                + " => " + produto.getQtdVendasMes(mes) + " unidades";
-                } else {
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "Erro! Nao ha produtos cadastrados.";
-                }
-            }
-        break;
-        case "FiltrarQtdEst":
-            if (inQtd.value == "" || quantidade < 0){
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Para filtrar produtos por quant. em estoque, o campo Quantidade deve ser preenchido com valor >= 0 !";
-                inQtd.focus();
-            }else {
-                let htmlTable = produtoController.filtrarProdsQuantEstoque(quantidade);
-                if (htmlTable != undefined){
-                    sectionResultado.appendChild(htmlTable);
-                } else {
-                    outResultado.style.color = "red";
-                    outResultado.innerHTML = "Erro! Não há produtos com até " + quantidade + " unidades em estoque!";
-                }   
-            }
-        break;
-        case "SalvarProdutos":
-            if (produtoController.salvarProdutos()){
-                outResultado.style.color = "blue";
-                outResultado.innerHTML = "Produtos salvos com sucesso!";
-            } else {
-                outResultado.style.color = "red";
-                outResultado.innerHTML = "Erro! Não foi possível salvar os produtos!";
-            }
-        break;
+        mostrarCodigo(codigo, "Fornecedor cadastrado com sucesso.");
     }
+}
+
+function executarExclusaoFornecedor() {
+    if (campoVazio(inCnpjFornecedor)) {
+        mostrarMensagem("Informe o CNPJ do fornecedor.", false);
+        inCnpjFornecedor.focus();
+    } else {
+        const codigo = armazemController.excluirFornecedor(inCnpjFornecedor.value);
+        mostrarCodigo(codigo, "Fornecedor excluído com sucesso.");
+    }
+}
+
+function executarAlteracaoFornecedor() {
+    if (campoVazio(inCnpjFornecedor)) {
+        mostrarMensagem("Informe o CNPJ do fornecedor que será alterado.", false);
+        inCnpjFornecedor.focus();
+    } else {
+        const codigo = armazemController.alterarFornecedor(
+            inCnpjFornecedor.value,
+            inRazaoSocial.value,
+            inTelefoneFornecedor.value,
+            inEnderecoFornecedor.value,
+            inCreditoFornecedor.value
+        );
+
+        mostrarCodigo(codigo, "Fornecedor alterado com sucesso.");
+    }
+}
+
+function consultarFornecedor() {
+    if (campoVazio(inCnpjFornecedor)) {
+        mostrarMensagem("Informe o CNPJ do fornecedor.", false);
+        inCnpjFornecedor.focus();
+    } else {
+        const fornecedor = armazemController.consultarFornecedor(inCnpjFornecedor.value);
+
+        if (fornecedor == undefined) {
+            mostrarMensagem("Fornecedor não encontrado.", false);
+        } else {
+            exibirFornecedores([fornecedor]);
+        }
+    }
+}
+
+function filtrarFornecedores() {
+    if (campoVazio(inCreditoFornecedor)) {
+        mostrarMensagem("Informe o valor de crédito usado no filtro.", false);
+        inCreditoFornecedor.focus();
+    } else {
+        const fornecedores = armazemController.filtrarFornecedoresPorCredito(
+            inCreditoFornecedor.value
+        );
+        exibirFornecedores(fornecedores);
+    }
+}
+
+function executarOperacaoProduto() {
+    limparSaida();
+
+    try {
+        switch (selectOpcaoProduto.value) {
+            case "Cadastrar":
+                cadastrarProduto();
+                break;
+            case "Excluir":
+                executarExclusaoProduto();
+                break;
+            case "Alterar":
+                executarAlteracaoProduto();
+                break;
+            case "Consultar":
+                consultarProduto();
+                break;
+            case "AlterarVendas":
+                alterarVendas();
+                break;
+            case "Comprar":
+                comprarProduto();
+                break;
+            case "Vender":
+                venderProduto();
+                break;
+            case "TotalVendasAno":
+                consultarTotalVendasAno();
+                break;
+            case "MaisVendidoMes":
+                consultarMaisVendidoMes();
+                break;
+            case "FaturamentoMes":
+                consultarFaturamentoMes();
+                break;
+            case "Listar":
+                exibirProdutos(armazemController.listarProdutos());
+                break;
+            case "TabelaVendasAnual":
+                exibirTabelaVendasAnual();
+                break;
+            case "ProdutosFornecedor":
+                exibirProdutosFornecedor();
+                break;
+        }
+    } catch (erro) {
+        mostrarMensagem(erro.message, false);
+    }
+}
+
+function cadastrarProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Preencha a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const codigo = armazemController.cadastrarProduto(
+            inDescricaoProduto.value,
+            inPrecoCompra.value,
+            inPrecoVenda.value,
+            inQuantidadeProduto.value,
+            inCnpjFornecedorProduto.value
+        );
+
+        mostrarCodigo(codigo, "Produto cadastrado com sucesso.");
+    }
+}
+
+function executarExclusaoProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const codigo = armazemController.excluirProduto(inDescricaoProduto.value);
+        mostrarCodigo(codigo, "Produto excluído com sucesso.");
+    }
+}
+
+function executarAlteracaoProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto que será alterado.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const codigo = armazemController.alterarProduto(
+            inDescricaoProduto.value,
+            inPrecoCompra.value,
+            inPrecoVenda.value,
+            inQuantidadeProduto.value,
+            inCnpjFornecedorProduto.value
+        );
+
+        mostrarCodigo(codigo, "Produto alterado com sucesso.");
+    }
+}
+
+function consultarProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const produto = armazemController.consultarProduto(inDescricaoProduto.value);
+
+        if (produto == undefined) {
+            mostrarMensagem("Produto não encontrado.", false);
+        } else {
+            exibirProdutos([produto]);
+        }
+    }
+}
+
+function alterarVendas() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const codigo = armazemController.alterarVendas(
+            inDescricaoProduto.value,
+            inMesProduto.value,
+            inQuantidadeProduto.value
+        );
+
+        mostrarCodigo(codigo, "Quantidade vendida alterada com sucesso.");
+    }
+}
+
+function comprarProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else if (campoVazio(inQuantidadeProduto)) {
+        mostrarMensagem("Informe a quantidade comprada.", false);
+        inQuantidadeProduto.focus();
+    } else {
+        const codigo = armazemController.comprarProduto(
+            inDescricaoProduto.value,
+            inQuantidadeProduto.value,
+            inPrecoCompra.value,
+            inPrecoVenda.value,
+            inCnpjFornecedorProduto.value
+        );
+
+        mostrarCodigo(codigo, "Compra registrada e estoque atualizado.");
+    }
+}
+
+function venderProduto() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else if (campoVazio(inQuantidadeProduto)) {
+        mostrarMensagem("Informe a quantidade vendida.", false);
+        inQuantidadeProduto.focus();
+    } else {
+        const resultado = armazemController.venderProduto(
+            inDescricaoProduto.value,
+            inQuantidadeProduto.value
+        );
+
+        if (resultado.codigo == "SUCESSO") {
+            mostrarMensagem(
+                `Venda registrada. Total a pagar: ${formatarMoeda(resultado.totalPagar)}.`,
+                true
+            );
+        } else {
+            mostrarCodigo(resultado.codigo, "");
+        }
+    }
+}
+
+function consultarTotalVendasAno() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const resultado = armazemController.consultarTotalVendasAno(
+            inDescricaoProduto.value
+        );
+
+        if (resultado == undefined) {
+            mostrarMensagem("Produto não encontrado.", false);
+        } else {
+            mostrarMensagem(
+                `${resultado.descricao} vendeu ${resultado.totalVendido} unidades no ano.`,
+                true
+            );
+        }
+    }
+}
+
+function consultarMaisVendidoMes() {
+    if (campoVazio(inDescricaoProduto)) {
+        mostrarMensagem("Informe a descrição do produto.", false);
+        inDescricaoProduto.focus();
+    } else {
+        const resultado = armazemController.consultarMaisVendidoMes(
+            inDescricaoProduto.value
+        );
+
+        if (resultado == undefined) {
+            mostrarMensagem("Produto não encontrado.", false);
+        } else {
+            mostrarMensagem(
+                `${resultado.descricao} teve mais vendas em ${resultado.nomeMes}: ` +
+                `${resultado.quantidadeVendida} unidades.`,
+                true
+            );
+        }
+    }
+}
+
+function consultarFaturamentoMes() {
+    const resultado = armazemController.consultarFaturamentoMes(inMesProduto.value);
+
+    if (resultado == undefined) {
+        mostrarMensagem("Informe um mês válido, de 1 a 12.", false);
+        inMesProduto.focus();
+    } else {
+        mostrarMensagem(
+            `Faturamento do mês ${resultado.mes}: ${formatarMoeda(resultado.faturamento)}.`,
+            true
+        );
+    }
+}
+
+function exibirTabelaVendasAnual() {
+    const produtos = armazemController.listarTabelaVendasAnual();
+
+    if (produtos.length == 0) {
+        mostrarMensagem("Não há produtos cadastrados.", false);
+    } else {
+        const cabecalhos = [
+            "Produto", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+            "Jul", "Ago", "Set", "Out", "Nov", "Dez", "Total"
+        ];
+        const linhas = produtos.map((produto) => [
+            produto.descricao,
+            ...produto.vendasMensais,
+            produto.totalVendido
+        ]);
+
+        sectionResultado.appendChild(gerarTabela(cabecalhos, linhas));
+    }
+}
+
+function exibirProdutosFornecedor() {
+    if (campoVazio(inCnpjFornecedorProduto)) {
+        mostrarMensagem("Informe o CNPJ do fornecedor.", false);
+        inCnpjFornecedorProduto.focus();
+    } else {
+        const resultado = armazemController.listarProdutosFornecedor(
+            inCnpjFornecedorProduto.value
+        );
+
+        if (resultado == undefined) {
+            mostrarMensagem("Fornecedor não encontrado.", false);
+        } else if (resultado.produtos.length == 0) {
+            mostrarMensagem("O fornecedor não possui produtos vinculados.", false);
+        } else {
+            mostrarMensagem(
+                `Produtos fornecidos por ${resultado.fornecedor.razaoSocial}.`,
+                true
+            );
+            exibirProdutos(resultado.produtos);
+        }
+    }
+}
+
+function exibirFornecedores(fornecedores) {
+    if (fornecedores.length == 0) {
+        mostrarMensagem("Nenhum fornecedor encontrado.", false);
+    } else {
+        const cabecalhos = [
+            "Razão social", "CNPJ", "Telefone", "Endereço", "Crédito"
+        ];
+        const linhas = fornecedores.map((fornecedor) => [
+            fornecedor.razaoSocial,
+            fornecedor.cnpj,
+            fornecedor.telefone,
+            fornecedor.endereco,
+            formatarMoeda(fornecedor.creditoDisponibilizado)
+        ]);
+
+        sectionResultado.appendChild(gerarTabela(cabecalhos, linhas));
+    }
+}
+
+function exibirProdutos(produtos) {
+    if (produtos.length == 0) {
+        mostrarMensagem("Nenhum produto encontrado.", false);
+    } else {
+        const cabecalhos = [
+            "Produto", "Preço de compra", "Preço de venda", "Estoque",
+            "CNPJ do fornecedor", "Fornecedor"
+        ];
+        const linhas = produtos.map((produto) => [
+            produto.descricao,
+            formatarMoeda(produto.precoCompra),
+            formatarMoeda(produto.precoVenda),
+            produto.quantidadeEstoque,
+            textoOuTraco(produto.cnpjFornecedor),
+            textoOuTraco(produto.razaoSocialFornecedor)
+        ]);
+
+        sectionResultado.appendChild(gerarTabela(cabecalhos, linhas));
+    }
+}
+
+function gerarTabela(cabecalhos, linhas) {
+    const tabela = document.createElement("table");
+    const thead = document.createElement("thead");
+    const linhaCabecalho = document.createElement("tr");
+    const tbody = document.createElement("tbody");
+
+    for (const cabecalho of cabecalhos) {
+        const th = document.createElement("th");
+        th.textContent = cabecalho;
+        linhaCabecalho.appendChild(th);
+    }
+
+    thead.appendChild(linhaCabecalho);
+    tabela.appendChild(thead);
+
+    for (const dadosLinha of linhas) {
+        const tr = document.createElement("tr");
+
+        for (const dado of dadosLinha) {
+            const td = document.createElement("td");
+            td.textContent = textoOuTraco(dado);
+            tr.appendChild(td);
+        }
+
+        tbody.appendChild(tr);
+    }
+
+    tabela.appendChild(tbody);
+    return tabela;
+}
+
+function mostrarCodigo(codigo, mensagemSucesso) {
+    const mensagens = {
+        "FORNECEDOR_JA_CADASTRADO": "Já existe fornecedor com esse CNPJ.",
+        "FORNECEDOR_NAO_ENCONTRADO": "Fornecedor não encontrado.",
+        "FORNECEDOR_VINCULADO_PRODUTO": "O fornecedor possui produtos vinculados e não pode ser excluído.",
+        "FORNECEDOR_NAO_VINCULADO": "O produto não possui fornecedor vinculado.",
+        "PRODUTO_JA_CADASTRADO": "Já existe produto com essa descrição.",
+        "PRODUTO_NAO_ENCONTRADO": "Produto não encontrado.",
+        "QUANTIDADE_INVALIDA": "Informe uma quantidade válida.",
+        "MES_INVALIDO": "Informe um mês válido, de 1 a 12.",
+        "PRECO_COMPRA_INVALIDO": "O preço de compra é inválido.",
+        "PRECO_VENDA_INVALIDO": "O preço de venda é inválido.",
+        "CREDITO_INSUFICIENTE": "O fornecedor não possui crédito suficiente.",
+        "ESTOQUE_INSUFICIENTE": "Não existe estoque suficiente para realizar a venda.",
+        "LOCAL_STORAGE_INDISPONIVEL": "Não foi possível acessar o armazenamento local."
+    };
+
+    if (codigo == "SUCESSO") {
+        mostrarMensagem(mensagemSucesso, true);
+    } else {
+        let mensagem = mensagens[codigo];
+
+        if (mensagem == undefined) {
+            mensagem = `Não foi possível realizar a operação: ${codigo}.`;
+        }
+
+        mostrarMensagem(mensagem, false);
+    }
+}
+
+function salvarDados() {
+    try {
+        const codigo = armazemController.salvarDados();
+        mostrarCodigo(codigo, "Dados salvos com sucesso.");
+    } catch (erro) {
+        mostrarMensagem(erro.message, false);
+    }
+}
+
+function habilitarCampos(campos) {
+    for (const campo of campos) {
+        campo.disabled = false;
+    }
+}
+
+function desabilitarCampos(campos) {
+    for (const campo of campos) {
+        campo.disabled = true;
+        campo.value = "";
+    }
+}
+
+function campoVazio(campo) {
+    return campo.value.trim() == "";
+}
+
+function limparSaida() {
+    outResultado.textContent = "";
+    sectionResultado.replaceChildren();
+}
+
+function mostrarMensagem(mensagem, sucesso) {
+    outResultado.textContent = mensagem;
+
+    if (sucesso) {
+        outResultado.className = "mensagem-sucesso";
+    } else {
+        outResultado.className = "mensagem-erro";
+    }
+}
+
+function formatarMoeda(valor) {
+    return Number(valor).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+function textoOuTraco(valor) {
+    let texto = valor;
+
+    if (valor == undefined) {
+        texto = "-";
+    }
+
+    if (valor === "") {
+        texto = "-";
+    }
+
+    return texto;
 }
