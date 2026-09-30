@@ -1,102 +1,208 @@
-*{
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.icon{
-    height: 50px;
+body {
+    min-height: 100vh;
+    color: #29211f;
+    background-color: #f7f2ee;
 }
 
-section{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-}
-
-header{
-    background-color: brown;
-    height: 80px;
+header {
+    min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
+    padding: 15px;
+    background-color: #7c2d20;
 }
 
-.titulo{
-    color: #fff;
+.icon {
+    width: 50px;
     height: 50px;
-    font-size: 2.5rem;
+    object-fit: contain;
 }
 
-.titulo-secundario{
-    margin: 30px 10px;
-    font-size: 2rem;
-}
-
-pre{
-    margin: 20px;
-    padding: 10px;
-}
-
-label{
-    margin-left: 20px;
-}
-
-input{
-    width: 200px;
-    height: 20px;
-    padding: 2px 7px;
-}
-
-select{
-    margin: 20px;
-}
-
-input[type="button"]{
-    /* display: block; */
-    height: 30px;
-    margin: 20px 0px 20px 20px;
+.titulo {
     color: #fff;
-    background-color: brown;
+    font-size: 2.2rem;
+}
+
+main {
+    width: min(1100px, calc(100% - 30px));
+    margin: 25px auto;
+}
+
+.seletor-tipo,
+.painel {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #d6c4bc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.seletor-tipo {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.seletor-tipo legend {
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+.seletor-tipo label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.seletor-tipo input {
+    width: auto;
+}
+
+.painel h2 {
+    margin-bottom: 18px;
+    color: #7c2d20;
+}
+
+select,
+input,
+button {
+    min-height: 36px;
+    padding: 7px 10px;
+    border: 1px solid #aa938a;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+select {
+    width: min(100%, 420px);
+    margin: 6px 0 18px;
+    display: block;
+    background-color: #fff;
+}
+
+.grade-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 14px 20px;
+}
+
+.grade-campos label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: bold;
+}
+
+.grade-campos input:disabled {
+    color: #777;
+    background-color: #eee9e6;
+}
+
+button {
+    margin-top: 20px;
     border: none;
-    text-transform: uppercase;
-}
-
-input[type="button"]:hover{
-    background-color: rgb(88, 30, 30);
-   cursor: pointer;
-}
-
-table{
-    margin: 20px;
-}
-
-th{
-    text-align: center;
-    height: 30px;
-    background-color: brown;
     color: #fff;
+    background-color: #7c2d20;
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
-td{
-    padding: 5px;
+button:hover:not(:disabled) {
+    background-color: #532017;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.acoes-persistencia {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#outResultado {
+    min-height: 48px;
+    margin: 15px 0;
+    padding: 14px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+}
+
+#outResultado:empty {
+    display: none;
+}
+
+.mensagem-sucesso {
+    border: 1px solid #88b58c;
+    color: #175d20;
+    background-color: #e9f7ea;
+}
+
+.mensagem-erro {
+    border: 1px solid #d9a09a;
+    color: #87251d;
+    background-color: #fcebea;
+}
+
+.sectionResultado {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    margin: 10px 0 30px;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+th,
+td {
+    padding: 9px;
+    border: 1px solid #d8c6be;
     text-align: center;
-    width: 70px;
-
+    white-space: nowrap;
 }
 
-tr{
-    background-color: rgb(255, 203, 175);
+th {
+    color: #fff;
+    background-color: #7c2d20;
 }
 
-tr:nth-child(odd){  
-    background-color: rgb(250, 216, 198);
+tbody tr:nth-child(odd) {
+    background-color: #fff1e9;
 }
 
-
-td:nth-child(1){
-    width: 150px;
+td:first-child {
     text-align: left;
+}
+
+[hidden] {
+    display: none;
+}
+
+@media (max-width: 650px) {
+    .titulo {
+        font-size: 1.65rem;
+    }
+
+    .grade-campos {
+        grid-template-columns: 1fr;
+    }
+
+    .seletor-tipo {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
 }

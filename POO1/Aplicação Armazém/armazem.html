@@ -1,46 +1,117 @@
-?<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armazém Xampu</title>
-    <link rel="icon" type="imagem/png" href="box.png" />
+    <link rel="icon" type="image/png" href="box.png">
     <link rel="stylesheet" href="armazem.css">
 </head>
 <body>
     <header>
-        <img src="box.png" class="icon">
+        <img src="box.png" class="icon" alt="Caixa do armazém">
         <h1 class="titulo">Armazém Xampu</h1>
     </header>
-    <main>
-        <select name="opcao" id="selectOpcao">
-            <option value="">Selecione uma opção!</option>
-            <option value="Cadastrar">Cadastrar um produto.</option>
-            <option value="Excluir">Excluir um Produto.</option>
-            <option value="Alterar">Alterar a quantidade vendida.</option>
-            <option value="ConsultarQtd">Consultar Quantidade Vendida no Ano.</option>
-            <option value="Listar">Listar Tabela Vendas Anual.</option>
-            <option value="ConsultarProd">Consultar Produto Mais Vendido no Mês.</option>
-            <option value="FiltrarQtdEst">Filtrar Produtos Com Até Quantidade em Estoque.</option>
-            <option value="SalvarProdutos">Salvar Produtos.</option>
-        </select>
-        <section>
-            <label>Produto: <input type="text" placeholder="Digite um produto" id="inProduto"></label>
-            
-            <label>Mês: <input type="number" placeholder="Digite um mês [1-12]" id="inMes"></label>
-            <label>Quantidade: <input type="number" placeholder="Digite a quantidade" id="inQtd"></label>
-            <div>
-                <input type="button" value="Ok" id="btOk">
-            </div>
-            <pre id="outResultado">Resultado</pre> 
-        </section>
-        <section class="sectionResultado">
-            
-        </section>
-    </main>
-    
-    <script src="ProdutoTeste.js" type="module"></script>
-    <script src="armazemView.js" type="module"></script>
 
+    <main>
+        <fieldset class="seletor-tipo">
+            <legend>Escolha o tipo de cadastro</legend>
+            <label>
+                <input type="radio" name="tipoCadastro" id="radioProduto" value="produto" checked>
+                Produto
+            </label>
+            <label>
+                <input type="radio" name="tipoCadastro" id="radioFornecedor" value="fornecedor">
+                Fornecedor
+            </label>
+        </fieldset>
+
+        <div id="divProduto" class="painel">
+            <h2>Produtos</h2>
+            <label for="selectOpcaoProduto">Operação</label>
+            <select id="selectOpcaoProduto">
+                <option value="">Selecione uma opção</option>
+                <option value="Cadastrar">Cadastrar produto</option>
+                <option value="Excluir">Excluir produto</option>
+                <option value="Alterar">Alterar produto</option>
+                <option value="Consultar">Consultar produto</option>
+                <option value="AlterarVendas">Alterar vendas de um mês</option>
+                <option value="Comprar">Comprar produto</option>
+                <option value="Vender">Vender produto</option>
+                <option value="TotalVendasAno">Consultar total vendido no ano</option>
+                <option value="MaisVendidoMes">Consultar mês com mais vendas</option>
+                <option value="FaturamentoMes">Consultar faturamento do mês</option>
+                <option value="Listar">Listar produtos</option>
+                <option value="TabelaVendasAnual">Listar tabela anual de vendas</option>
+                <option value="ProdutosFornecedor">Listar produtos de um fornecedor</option>
+            </select>
+
+            <div class="grade-campos">
+                <label for="inDescricaoProduto">Descrição
+                    <input type="text" id="inDescricaoProduto" disabled>
+                </label>
+                <label for="inPrecoCompra">Preço de compra
+                    <input type="number" id="inPrecoCompra" min="0" step="0.01" disabled>
+                </label>
+                <label for="inPrecoVenda">Preço de venda
+                    <input type="number" id="inPrecoVenda" min="0" step="0.01" disabled>
+                </label>
+                <label for="inQuantidadeProduto">Quantidade
+                    <input type="number" id="inQuantidadeProduto" min="0" step="1" disabled>
+                </label>
+                <label for="inMesProduto">Mês
+                    <input type="number" id="inMesProduto" min="1" max="12" step="1" disabled>
+                </label>
+                <label for="inCnpjFornecedorProduto">CNPJ do fornecedor
+                    <input type="text" id="inCnpjFornecedorProduto" disabled>
+                </label>
+            </div>
+
+            <button type="button" id="btProduto" disabled>Executar</button>
+        </div>
+
+        <div id="divFornecedor" class="painel" hidden>
+            <h2>Fornecedores</h2>
+            <label for="selectOpcaoFornecedor">Operação</label>
+            <select id="selectOpcaoFornecedor">
+                <option value="">Selecione uma opção</option>
+                <option value="Cadastrar">Cadastrar fornecedor</option>
+                <option value="Excluir">Excluir fornecedor</option>
+                <option value="Alterar">Alterar fornecedor</option>
+                <option value="Consultar">Consultar fornecedor</option>
+                <option value="Listar">Listar fornecedores</option>
+                <option value="FiltrarCredito">Filtrar por crédito</option>
+            </select>
+
+            <div class="grade-campos">
+                <label for="inRazaoSocial">Razão social
+                    <input type="text" id="inRazaoSocial" disabled>
+                </label>
+                <label for="inCnpjFornecedor">CNPJ
+                    <input type="text" id="inCnpjFornecedor" disabled>
+                </label>
+                <label for="inTelefoneFornecedor">Telefone
+                    <input type="text" id="inTelefoneFornecedor" disabled>
+                </label>
+                <label for="inEnderecoFornecedor">Endereço
+                    <input type="text" id="inEnderecoFornecedor" disabled>
+                </label>
+                <label for="inCreditoFornecedor">Crédito disponibilizado
+                    <input type="number" id="inCreditoFornecedor" min="0" step="0.01" disabled>
+                </label>
+            </div>
+
+            <button type="button" id="btFornecedor" disabled>Executar</button>
+        </div>
+
+        <div class="acoes-persistencia">
+            <button type="button" id="btSalvar">Salvar dados</button>
+        </div>
+
+        <pre id="outResultado" aria-live="polite"></pre>
+        <section id="sectionResultado" class="sectionResultado"></section>
+    </main>
+
+    <script src="armazemView.js" type="module"></script>
 </body>
 </html>

@@ -1,14 +1,20 @@
+import { Fornecedor } from "./Fornecedor.js";
+
 export class Produto {
     #descricao;
-    #preco;
+    #precoCompra;
+    #precoVenda;
     #quantidadeEstoque;
     #vendasMensais;
+    #fornecedor;
 
-    constructor(descricao, preco, quantidadeEstoque, vendasMensais = []) {
+    constructor(descricao, precoCompra, precoVenda, quantidadeEstoque, vendasMensais = []) {
         this.descricao = descricao;
-        this.preco = preco;
+        this.precoCompra = precoCompra;
+        this.precoVenda = precoVenda;
         this.quantidadeEstoque = quantidadeEstoque;
         this.#vendasMensais = this.#criarVetorVendas(vendasMensais);
+        this.#fornecedor = undefined;
     }
 
     get descricao() {
@@ -23,18 +29,22 @@ export class Produto {
         this.#descricao = descricao.trim().toUpperCase();
     }
 
-    get preco() {
-        return this.#preco;
+    get precoCompra() {
+        return this.#precoCompra;
     }
 
-    set preco(preco) {
-        const precoProduto = Number(preco);
+    set precoCompra(novoPrecoCompra) {
+        this.#validarPreco(novoPrecoCompra, "O preco de compra");
+        this.#precoCompra = Number(novoPrecoCompra);
+    }
 
-        if (Number.isNaN(precoProduto) || precoProduto < 0) {
-            throw new Error("O preco do produto deve ser maior ou igual a zero.");
-        }
+    get precoVenda() {
+        return this.#precoVenda;
+    }
 
-        this.#preco = precoProduto;
+    set precoVenda(novoPrecoVenda) {
+        this.#validarPreco(novoPrecoVenda, "O preco de venda");
+        this.#precoVenda = Number(novoPrecoVenda);
     }
 
     get quantidadeEstoque() {
@@ -52,6 +62,22 @@ export class Produto {
 
     set vendasMensais(vendasMensais) {
         this.#vendasMensais = this.#criarVetorVendas(vendasMensais);
+    }
+
+    get fornecedor() {
+        return this.#fornecedor;
+    }
+
+    set fornecedor(novoFornecedor) {
+        if (novoFornecedor == undefined) {
+            this.#fornecedor = undefined;
+        } else {
+            if (novoFornecedor instanceof Fornecedor) {
+                this.#fornecedor = novoFornecedor;
+            } else {
+                throw new Error("O fornecedor deve ser um objeto da classe Fornecedor.");
+            }
+        }
     }
 
     getQtdVendasMes(mes) {
@@ -87,7 +113,37 @@ export class Produto {
     }
 
     toString() {
-        return `Produto: ${this.#descricao} | Preco: R$ ${this.#preco.toFixed(2)} | Estoque: ${this.#quantidadeEstoque} | Vendas no ano: ${this.consultarQuantidadeVendidaAno()}`;
+        let dadosFornecedor = "Fornecedor: NAO VINCULADO";
+
+        if (this.#fornecedor != undefined) {
+            dadosFornecedor = `Fornecedor: ${this.#fornecedor.razaoSocial} | CNPJ: ${this.#fornecedor.cnpj}`;
+        }
+
+        return `Produto: ${this.#descricao} | ` +
+               `Preco de compra: R$ ${this.#precoCompra.toFixed(2)} | ` +
+               `Preco de venda: R$ ${this.#precoVenda.toFixed(2)} | ` +
+               `Estoque: ${this.#quantidadeEstoque} | ` +
+               `Vendas no ano: ${this.consultarQuantidadeVendidaAno()} | ` +
+               dadosFornecedor;
+    }
+
+    stringify() {
+        let cnpjFornecedor;
+
+        if (this.#fornecedor != undefined) {
+            cnpjFornecedor = this.#fornecedor.cnpj;
+        }
+
+        const produtoLiteral = {
+            descricao: this.#descricao,
+            precoCompra: this.#precoCompra,
+            precoVenda: this.#precoVenda,
+            quantidadeEstoque: this.#quantidadeEstoque,
+            vendasMensais: [...this.#vendasMensais],
+            cnpjFornecedor: cnpjFornecedor
+        };
+
+        return JSON.stringify(produtoLiteral);
     }
 
     #criarVetorVendas(vendasMensais) {
@@ -110,6 +166,14 @@ export class Produto {
     #validarQuantidade(quantidade, nomeCampo) {
         if (!Number.isInteger(Number(quantidade)) || Number(quantidade) < 0) {
             throw new Error(`${nomeCampo} deve ser um numero inteiro maior ou igual a zero.`);
+        }
+    }
+
+    #validarPreco(preco, nomeCampo) {
+        const precoNumerico = Number(preco);
+
+        if (Number.isNaN(precoNumerico) || precoNumerico < 0) {
+            throw new Error(`${nomeCampo} deve ser maior ou igual a zero.`);
         }
     }
 }
