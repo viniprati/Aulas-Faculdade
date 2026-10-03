@@ -5,65 +5,76 @@ export class Fornecedor {
     #endereco;
     #creditoDisponibilizado;
 
-    constructor(razaoSocial, cnpj, telefone, endereco, creditoDisponibilizado = 0) {
+    constructor(razaoSocial, cnpj, telefone = "", endereco = "", creditoDisponibilizado = 0) {
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
         this.telefone = telefone;
         this.endereco = endereco;
         this.creditoDisponibilizado = creditoDisponibilizado;
     }
+
     get razaoSocial() {
         return this.#razaoSocial;
     }
+
     set razaoSocial(novaRazaoSocial) {
-        if (novaRazaoSocial != undefined) {
-            if (novaRazaoSocial.trim() != "") {
-                this.#razaoSocial = novaRazaoSocial.trim().toUpperCase();
-            }
+        if (typeof novaRazaoSocial != "string" || novaRazaoSocial.trim() == "") {
+            throw new Error("A razão social do fornecedor deve ser preenchida.");
         }
+
+        this.#razaoSocial = novaRazaoSocial.trim().toUpperCase();
     }
+
     get cnpj() {
         return this.#cnpj;
     }
+
     set cnpj(novoCnpj) {
-        if (novoCnpj != undefined) {
-            if (novoCnpj.trim() != "") {
-                this.#cnpj = novoCnpj.trim();
-            }
+        if (typeof novoCnpj != "string" || novoCnpj.trim() == "") {
+            throw new Error("O CNPJ do fornecedor deve ser preenchido.");
         }
+
+        this.#cnpj = novoCnpj.trim();
     }
+
     get telefone() {
         return this.#telefone;
     }
+
     set telefone(novoTelefone) {
-        if (novoTelefone != undefined) {
-            if (novoTelefone.trim() != "") {
-                this.#telefone = novoTelefone.trim();
-            }
+        if (typeof novoTelefone != "string") {
+            throw new Error("O telefone do fornecedor deve ser um texto.");
         }
+
+        this.#telefone = novoTelefone.trim();
     }
+
     get endereco() {
         return this.#endereco;
     }
+
     set endereco(novoEndereco) {
-        if (novoEndereco != undefined) {
-            if (novoEndereco.trim() != "") {
-                this.#endereco = novoEndereco.trim().toUpperCase();
-            }
+        if (typeof novoEndereco != "string") {
+            throw new Error("O endereço do fornecedor deve ser um texto.");
         }
+
+        this.#endereco = novoEndereco.trim().toUpperCase();
     }
+
     get creditoDisponibilizado() {
         return this.#creditoDisponibilizado;
     }
+
     set creditoDisponibilizado(novoCredito) {
         const creditoNumerico = Number(novoCredito);
 
-        if (Number.isNaN(creditoNumerico) == false) {
-            if (creditoNumerico >= 0) {
-                this.#creditoDisponibilizado = creditoNumerico;
-            }
+        if (!Number.isFinite(creditoNumerico) || creditoNumerico < 0) {
+            throw new Error("O crédito disponibilizado deve ser um número maior ou igual a zero.");
         }
+
+        this.#creditoDisponibilizado = creditoNumerico;
     }
+
     toString() {
         return `Razão Social: ${this.#razaoSocial}\n` +
                `CNPJ: ${this.#cnpj}\n` +
@@ -71,6 +82,7 @@ export class Fornecedor {
                `Endereço: ${this.#endereco}\n` +
                `Crédito Disponibilizado: R$ ${this.#creditoDisponibilizado.toFixed(2)}`;
     }
+
     stringify() {
         const fornecedorLiteral = {
             razaoSocial: this.#razaoSocial,

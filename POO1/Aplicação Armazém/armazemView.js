@@ -247,10 +247,15 @@ function filtrarFornecedores() {
         mostrarMensagem("Informe o valor de crédito usado no filtro.", false);
         inCreditoFornecedor.focus();
     } else {
-        const fornecedores = armazemController.filtrarFornecedoresPorCredito(
+        const resultado = armazemController.filtrarFornecedoresPorCredito(
             inCreditoFornecedor.value
         );
-        exibirFornecedores(fornecedores);
+
+        if (typeof resultado == "string") {
+            mostrarCodigo(resultado, "");
+        } else {
+            exibirFornecedores(resultado);
+        }
     }
 }
 
@@ -603,6 +608,7 @@ function mostrarCodigo(codigo, mensagemSucesso) {
         "MES_INVALIDO": "Informe um mês válido, de 1 a 12.",
         "PRECO_COMPRA_INVALIDO": "O preço de compra é inválido.",
         "PRECO_VENDA_INVALIDO": "O preço de venda é inválido.",
+        "CREDITO_INVALIDO": "O crédito disponibilizado é inválido.",
         "CREDITO_INSUFICIENTE": "O fornecedor não possui crédito suficiente.",
         "ESTOQUE_INSUFICIENTE": "Não existe estoque suficiente para realizar a venda.",
         "LOCAL_STORAGE_INDISPONIVEL": "Não foi possível acessar o armazenamento local."

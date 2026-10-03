@@ -147,6 +147,10 @@ export class Produto {
     }
 
     #criarVetorVendas(vendasMensais) {
+        if (!Array.isArray(vendasMensais)) {
+            throw new Error("As vendas mensais devem ser informadas em uma lista.");
+        }
+
         const vendas = Array(12).fill(0);
 
         for (let i = 0; i < vendasMensais.length && i < vendas.length; i++) {
@@ -172,7 +176,7 @@ export class Produto {
     #validarPreco(preco, nomeCampo) {
         const precoNumerico = Number(preco);
 
-        if (Number.isNaN(precoNumerico) || precoNumerico < 0) {
+        if (!Number.isFinite(precoNumerico) || precoNumerico < 0) {
             throw new Error(`${nomeCampo} deve ser maior ou igual a zero.`);
         }
     }

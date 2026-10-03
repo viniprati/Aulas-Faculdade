@@ -56,23 +56,40 @@ export class ArmazemController {
         let resultado = "FORNECEDOR_NAO_ENCONTRADO";
 
         if (fornecedor != undefined) {
-            if (this.#campoInformado(razaoSocial)) {
-                fornecedor.razaoSocial = razaoSocial;
-            }
+            if (
+                this.#campoInformado(creditoDisponibilizado) &&
+                !this.#precoValido(creditoDisponibilizado)
+            ) {
+                resultado = "CREDITO_INVALIDO";
+            } else {
+                const fornecedorAtualizado = new Fornecedor(
+                    this.#campoInformado(razaoSocial) ? razaoSocial : fornecedor.razaoSocial,
+                    fornecedor.cnpj,
+                    this.#campoInformado(telefone) ? telefone : fornecedor.telefone,
+                    this.#campoInformado(endereco) ? endereco : fornecedor.endereco,
+                    this.#campoInformado(creditoDisponibilizado)
+                        ? creditoDisponibilizado
+                        : fornecedor.creditoDisponibilizado
+                );
 
-            if (this.#campoInformado(telefone)) {
-                fornecedor.telefone = telefone;
-            }
+                if (this.#campoInformado(razaoSocial)) {
+                    fornecedor.razaoSocial = fornecedorAtualizado.razaoSocial;
+                }
 
-            if (this.#campoInformado(endereco)) {
-                fornecedor.endereco = endereco;
-            }
+                if (this.#campoInformado(telefone)) {
+                    fornecedor.telefone = fornecedorAtualizado.telefone;
+                }
 
-            if (this.#campoInformado(creditoDisponibilizado)) {
-                fornecedor.creditoDisponibilizado = creditoDisponibilizado;
-            }
+                if (this.#campoInformado(endereco)) {
+                    fornecedor.endereco = fornecedorAtualizado.endereco;
+                }
 
-            resultado = "SUCESSO";
+                if (this.#campoInformado(creditoDisponibilizado)) {
+                    fornecedor.creditoDisponibilizado = fornecedorAtualizado.creditoDisponibilizado;
+                }
+
+                resultado = "SUCESSO";
+            }
         }
 
         return resultado;
@@ -97,15 +114,14 @@ export class ArmazemController {
 
     filtrarFornecedoresPorCredito(valorCredito) {
         const credito = Number(valorCredito);
-        let fornecedores = [];
 
-        if (Number.isNaN(credito) == false) {
-            fornecedores = this.#vetFornecedores
-                .filter((fornecedor) => fornecedor.creditoDisponibilizado > credito)
-                .map((fornecedor) => this.#criarFornecedorDTO(fornecedor));
+        if (!Number.isFinite(credito) || credito < 0) {
+            return "CREDITO_INVALIDO";
         }
 
-        return fornecedores;
+        return this.#vetFornecedores
+            .filter((fornecedor) => fornecedor.creditoDisponibilizado > credito)
+            .map((fornecedor) => this.#criarFornecedorDTO(fornecedor));
     }
 
     cadastrarProduto(
@@ -118,32 +134,40 @@ export class ArmazemController {
         let resultado = "PRODUTO_JA_CADASTRADO";
 
         if (this.#buscarProduto(descricao) == undefined) {
-            let fornecedor;
-            let fornecedorValido = true;
+            if (!this.#precoValido(precoCompra)) {
+                resultado = "PRECO_COMPRA_INVALIDO";
+            } else if (!this.#precoValido(precoVenda)) {
+                resultado = "PRECO_VENDA_INVALIDO";
+            } else if (!this.#quantidadeValida(quantidadeEstoque, true)) {
+                resultado = "QUANTIDADE_INVALIDA";
+            } else {
+                let fornecedor;
+                let fornecedorValido = true;
 
-            if (this.#campoInformado(cnpjFornecedor)) {
-                fornecedor = this.#buscarFornecedor(cnpjFornecedor);
+                if (this.#campoInformado(cnpjFornecedor)) {
+                    fornecedor = this.#buscarFornecedor(cnpjFornecedor);
 
-                if (fornecedor == undefined) {
-                    fornecedorValido = false;
-                    resultado = "FORNECEDOR_NAO_ENCONTRADO";
-                }
-            }
-
-            if (fornecedorValido) {
-                const produto = new Produto(
-                    descricao,
-                    precoCompra,
-                    precoVenda,
-                    quantidadeEstoque
-                );
-
-                if (fornecedor != undefined) {
-                    produto.fornecedor = fornecedor;
+                    if (fornecedor == undefined) {
+                        fornecedorValido = false;
+                        resultado = "FORNECEDOR_NAO_ENCONTRADO";
+                    }
                 }
 
-                this.#vetProdutos.push(produto);
-                resultado = "SUCESSO";
+                if (fornecedorValido) {
+                    const produto = new Produto(
+                        descricao,
+                        precoCompra,
+                        precoVenda,
+                        quantidadeEstoque
+                    );
+
+                    if (fornecedor != undefined) {
+                        produto.fornecedor = fornecedor;
+                    }
+
+                    this.#vetProdutos.push(produto);
+                    resultado = "SUCESSO";
+                }
             }
         }
 
@@ -182,6 +206,27 @@ export class ArmazemController {
                 if (fornecedor == undefined) {
                     fornecedorValido = false;
                     resultado = "FORNECEDOR_NAO_ENCONTRADO";
+                }
+            }
+
+            if (fornecedorValido && this.#campoInformado(precoCompra)) {
+                if (!this.#precoValido(precoCompra)) {
+                    fornecedorValido = false;
+                    resultado = "PRECO_COMPRA_INVALIDO";
+                }
+            }
+
+            if (fornecedorValido && this.#campoInformado(precoVenda)) {
+                if (!this.#precoValido(precoVenda)) {
+                    fornecedorValido = false;
+                    resultado = "PRECO_VENDA_INVALIDO";
+                }
+            }
+
+            if (fornecedorValido && this.#campoInformado(quantidadeEstoque)) {
+                if (!this.#quantidadeValida(quantidadeEstoque, true)) {
+                    fornecedorValido = false;
+                    resultado = "QUANTIDADE_INVALIDA";
                 }
             }
 
@@ -634,13 +679,7 @@ export class ArmazemController {
 
     #precoValido(preco) {
         const precoNumerico = Number(preco);
-        let valido = Number.isNaN(precoNumerico) == false;
-
-        if (valido) {
-            valido = precoNumerico >= 0;
-        }
-
-        return valido;
+        return Number.isFinite(precoNumerico) && precoNumerico >= 0;
     }
 
     #mesValido(mes) {
