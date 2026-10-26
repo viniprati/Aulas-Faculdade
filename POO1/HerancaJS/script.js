@@ -79,55 +79,56 @@ const resultadoBanco = [
   poupancaBruno.mostrarDados(),
 ].join("\n");
 
-// Exemplo da seção "Classes ECMAScript 2015" da MDN, adaptado para a página.
-class Person {
-  constructor(first, last, age, gender, interests) {
-    this.name = { first, last };
-    this.age = age;
-    this.gender = gender;
-    this.interests = interests;
+// Na MDN, estas classes se chamam Person e Teacher.
+// Aqui, o mesmo exemplo foi traduzido para Pessoa e Professor.
+class Pessoa {
+  constructor(primeiroNome, sobrenome, idade, genero, interesses) {
+    this.nome = { primeiro: primeiroNome, sobrenome };
+    this.idade = idade;
+    this.genero = genero;
+    this.interesses = interesses;
   }
 
-  greeting() {
-    return `Hi! I'm ${this.name.first}`;
+  cumprimentar() {
+    return `Olá! Eu sou ${this.nome.primeiro}.`;
   }
 
-  farewell() {
-    return `${this.name.first} has left the building. Bye for now!`;
-  }
-}
-
-class Teacher extends Person {
-  constructor(first, last, age, gender, interests, subject, grade) {
-    super(first, last, age, gender, interests);
-    this._subject = subject;
-    this.grade = grade;
-  }
-
-  get subject() {
-    return this._subject;
-  }
-
-  set subject(newSubject) {
-    this._subject = newSubject;
+  despedir() {
+    return `${this.nome.primeiro} foi embora. Até logo!`;
   }
 }
 
-const han = new Person("Han", "Solo", 25, "male", ["Smuggling"]);
-const leia = new Person("Leia", "Organa", 19, "female", ["Government"]);
-const snape = new Teacher(
-  "Severus", "Snape", 58, "male", ["Potions"], "Dark arts", 5,
+class Professor extends Pessoa {
+  constructor(primeiroNome, sobrenome, idade, genero, interesses, disciplina, serie) {
+    super(primeiroNome, sobrenome, idade, genero, interesses);
+    this._disciplina = disciplina;
+    this.serie = serie;
+  }
+
+  get disciplina() {
+    return this._disciplina;
+  }
+
+  set disciplina(novaDisciplina) {
+    this._disciplina = novaDisciplina;
+  }
+}
+
+const han = new Pessoa("Han", "Solo", 25, "masculino", ["Contrabando"]);
+const leia = new Pessoa("Leia", "Organa", 19, "feminino", ["Governo"]);
+const professor = new Professor(
+  "Severus", "Snape", 58, "masculino", ["Poções"], "Artes das Trevas", 5,
 );
-const materiaInicial = snape.subject;
-snape.subject = "Balloon animals";
+const disciplinaInicial = professor.disciplina;
+professor.disciplina = "Escultura de balões";
 
 const resultadoMdn = [
-  han.greeting(),
-  leia.farewell(),
-  snape.greeting(),
-  snape.farewell(),
-  `Idade: ${snape.age}; matéria inicial: ${materiaInicial}`,
-  `Matéria após o setter: ${snape.subject}`,
+  han.cumprimentar(),
+  leia.despedir(),
+  professor.cumprimentar(),
+  professor.despedir(),
+  `Idade: ${professor.idade}; disciplina inicial: ${disciplinaInicial}`,
+  `Disciplina após alteração: ${professor.disciplina}`,
 ].join("\n");
 
 console.log(`=== Sistema bancário ===\n${resultadoBanco}`);
