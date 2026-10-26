@@ -1,0 +1,5 @@
+Como organizar o projeto em MVC: o que pertence ao Model, ao Controller e à View.
+
+Como associar Produto a Fornecedor: guardar uma referência ao objeto sem copiar todos os seus dados.
+
+Por que o Controller retorna DTOs e códigos simbólicos: para proteger os objetos do Model e deixar a View responsável pelas mensagens.
