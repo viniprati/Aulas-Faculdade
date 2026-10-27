@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </main>
 
-    <?php echo criarRodape('Cadastro simples usando PHP e arquivo JSON.'); ?>
+    <?php echo criarRodape('Cadastro simples usando PHP e banco de dados.'); ?>
     <script>
         const campoSenha = document.getElementById('senha');
         const botaoGerarSenha = document.getElementById('gerarSenha');

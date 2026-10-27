@@ -1,6 +1,6 @@
 <?php
 require 'funcoes.php';
-require 'conexao.php';
+require_once 'conexao.php';
 
 $usuarios = [];
 $erro = '';

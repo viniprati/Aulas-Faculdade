@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/conexao.php';
+
 iniciarSessao();
 
 function iniciarSessao() {
@@ -383,30 +385,6 @@ function estaLogado() {
     return isset($_SESSION['usuario_email']);
 }
 
-function caminhoArquivoUsuarios() {
-    return __DIR__ . '/usuarios.json';
-}
-
-function buscarUsuarios() {
-    if (!file_exists(caminhoArquivoUsuarios())) {
-        return [];
-    }
-
-    $conteudo = file_get_contents(caminhoArquivoUsuarios());
-    $usuarios = json_decode($conteudo, true);
-
-    if ($usuarios == null) {
-        return [];
-    }
-
-    return $usuarios;
-}
-
-function guardarUsuarios($usuarios) {
-    $json = json_encode($usuarios, JSON_PRETTY_PRINT);
-    file_put_contents(caminhoArquivoUsuarios(), $json, LOCK_EX);
-}
-
 function salvarLogin($nome, $email) {
     $_SESSION['usuario_nome'] = $nome;
     $_SESSION['usuario_email'] = $email;
@@ -468,22 +446,16 @@ function cadastrarUsuario($nome, $email, $senha) {
         return $erroSenha;
     }
 
-    $usuarios = buscarUsuarios();
-
-    foreach ($usuarios as $usuario) {
-        if (strtolower($usuario['email']) == $email) {
+    try {
+        $consulta = conectarBanco()->prepare('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)');
+        $consulta->execute([$nome, $email, password_hash($senha, PASSWORD_DEFAULT)]);
+    } catch (PDOException $excecao) {
+        if ($excecao->getCode() == '23000') {
             return 'Este e-mail já está cadastrado.';
         }
+        return 'Não foi possível cadastrar. Verifique a conexão com o banco.';
     }
 
-    $novoUsuario = [
-        'nome' => $nome,
-        'email' => $email,
-        'senha' => password_hash($senha, PASSWORD_DEFAULT)
-    ];
-
-    $usuarios[] = $novoUsuario;
-    guardarUsuarios($usuarios);
     salvarLogin($nome, $email);
 
     return '';
@@ -491,18 +463,17 @@ function cadastrarUsuario($nome, $email, $senha) {
 
 function fazerLogin($email, $senha) {
     $email = strtolower(trim($email));
-    $usuarios = buscarUsuarios();
+    try {
+        $consulta = conectarBanco()->prepare('SELECT id, nome, email, senha FROM usuarios WHERE email = ?');
+        $consulta->execute([$email]);
+        $usuario = $consulta->fetch();
+    } catch (PDOException $excecao) {
+        return 'Não foi possível entrar. Verifique a conexão com o banco.';
+    }
 
-    foreach ($usuarios as $indice => $usuario) {
-        if (strtolower($usuario['email']) == $email && senhaConfere($senha, $usuario['senha'])) {
-            if (!senhaEstaCriptografada($usuario['senha'])) {
-                $usuarios[$indice]['senha'] = password_hash($senha, PASSWORD_DEFAULT);
-                guardarUsuarios($usuarios);
-            }
-
-            salvarLogin($usuario['nome'], $usuario['email']);
-            return '';
-        }
+    if ($usuario && senhaConfere($senha, $usuario['senha'])) {
+        salvarLogin($usuario['nome'], $usuario['email']);
+        return '';
     }
 
     return 'E-mail ou senha inválidos.';
